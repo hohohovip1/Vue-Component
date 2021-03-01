@@ -1,10 +1,27 @@
 <template>
   <h1>{{ title }}</h1>
   <p>Welcome to gatcha hell ....</p>
-  <div v-if="showModal">
-    <Modal :header="header" :text="text" theme="sale" @close="toggleModal" />
-  </div>
-  <button @click="toggleModal">open portal</button>
+  <teleport to=".modals" v-if="showModal">
+    <Modal theme="" @close="toggleModal">
+      <template v-slot:links>
+        <a href="#">Sign up Now!!!</a>
+        <a href="#">more info</a>
+      </template>
+      <h1>Primogem giveaway!!!</h1>
+      <p>Ohh Yehhh</p>
+    </Modal>
+  </teleport>
+  <button @click.alt="toggleModal">Open portal (alt)</button>
+
+  <teleport to=".modals" v-if="showModalTwo">
+    <Modal theme="" @close="toggleModalTwo">
+      <template v-slot:links>
+        <a href="#">More to come</a>
+      </template>
+      <h1>Something</h1>
+    </Modal>
+  </teleport>
+  <button @click="toggleModalTwo">Open portal</button>
 </template>
 
 <script>
@@ -18,21 +35,24 @@ export default {
   data() {
     return {
       title: 'My First Vue App :v',
-      header: 'Still need more Primogems!!!',
-      text: 'Suffering from success',
       showModal: false,
+      showModalTwo: false,
     };
   },
   methods: {
     toggleModal() {
       this.showModal = !this.showModal;
     },
+    toggleModalTwo() {
+      this.showModalTwo = !this.showModalTwo;
+    },
   },
 };
 </script>
 
 <style>
-#app {
+#app,
+.modals {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
