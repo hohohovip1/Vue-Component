@@ -4,4 +4,4 @@ import './assets/global.css';
 import PrimeVue from 'primevue/config';
 const app = createApp(App);
 
-app.use(PrimeVue).mount('#app');
+app.use(PrimeVue, { ripple: true }).mount('#app');

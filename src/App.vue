@@ -4,6 +4,21 @@
         <h1>{{ title }}</h1>
         <p>Welcome to gatcha hell ....</p>
         <h3>Vue in training</h3>
+        <div class="custom-tab">
+            <Button
+                v-for="tab in tabs"
+                :key="tab.name"
+                :class="[
+                    'tab-button',
+                    { active: currentTab.name === tab.name },
+                ]"
+                @click="currentTab = tab"
+            >
+                {{ tab.name }}
+            </Button>
+        </div>
+
+        <component :is="currentTab.component" class="tab"></component>
 
         <div class="p-d-flex">
             <Button label="Select to do" @click="toggleModal" class="p-mr-2" />
@@ -14,6 +29,7 @@
                 class="p-mr-2"
             />
         </div>
+
         <teleport to=".modals" v-if="showModal">
             <CustomModal theme="" @close="toggleModal">
                 <template v-slot:body>
@@ -93,9 +109,28 @@
 
 <script>
 import CustomModal from './components/CustomModal.vue';
+import Story from './components/Story.vue';
+
 import RadioButton from 'primevue/radiobutton';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import ProgressSpinner from 'primevue/progressspinner';
+let alltab = [
+    {
+        name: 'Story',
+        component: 'Story',
+    },
+    {
+        name: 'Posts',
+        component: 'ProgressSpinner',
+    },
+    {
+        name: 'Archive',
+        component: {
+            template: '<div>Archive component</div>',
+        },
+    },
+];
 export default {
     name: 'App',
     components: {
@@ -103,6 +138,8 @@ export default {
         RadioButton,
         Button,
         InputText,
+        Story,
+        ProgressSpinner,
     },
 
     data() {
@@ -113,6 +150,8 @@ export default {
             title: '',
             showModal: false,
             showModalTwo: false,
+            currentTab: alltab[0],
+            tabs: alltab,
             trainingList: [
                 { id: 0, text: 'Component: with props and data' },
                 { id: 1, text: 'Routes: make example with submenu' },
@@ -127,6 +166,7 @@ export default {
     },
     created() {
         this.console = window.console;
+        console.log('created');
     },
     methods: {
         goToAdd() {
@@ -134,7 +174,6 @@ export default {
             this.toggleModalTwo();
         },
         addTodo() {
-            console.log(this.value);
             if (this.value) {
                 const newToDo = {
                     id: this.trainingList.length,
@@ -193,5 +232,8 @@ h1 {
 }
 .p-float-label label {
     left: 4rem;
+}
+.custom-tab {
+    margin-bottom: 2rem;
 }
 </style>
